@@ -9,8 +9,8 @@ jobs:
   mavenBuild:
     runs-on: ubuntu-latest
     steps:
-      - name: Maven clean install
+      - name: Print Maven clean install
         run: mvn clean install
 
-      - name: Docker build
+      - name: Print Docker build
         run: mvn docker:build

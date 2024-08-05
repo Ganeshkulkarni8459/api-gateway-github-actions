@@ -9,6 +9,9 @@ jobs:
   mavenBuild:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout file
+        run: pom.xml
+        
       - name: Print Maven clean install
         run: mvn clean install
 

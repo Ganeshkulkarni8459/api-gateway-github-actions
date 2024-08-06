@@ -13,6 +13,8 @@ jobs:
       image: maven:latest
       
     steps:
-
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
       - name: Run Maven clean install
         run: mvn clean install

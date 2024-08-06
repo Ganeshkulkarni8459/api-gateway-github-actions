@@ -12,5 +12,7 @@ jobs:
       image: maven:latest
       
     steps:
+      - name: Moves Current Directory
+        run: api-gateway-github-actions/pom.xml
       - name: Print Maven clean install
         run: mvn clean install

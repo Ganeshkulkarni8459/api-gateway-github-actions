@@ -12,6 +12,9 @@ jobs:
       image: maven:latest
       
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
       - name: Moves Current Directory
         run: cd api-gateway-github-actions
         

@@ -10,10 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: maven:latest
+      
     steps:
-      - name: Checkout file
-        run: pom.xml
-        
       - name: Print Maven clean install
         run: mvn clean install
 

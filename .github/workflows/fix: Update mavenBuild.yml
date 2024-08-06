@@ -15,7 +15,6 @@ jobs:
     steps:
       - name: Change directory to where the POM file is located
         run: cd ../..
-      - name: Move Towards pom.xml
-        run: cd pom.xml
+  
       - name: Run Maven clean install
         run: mvn clean install

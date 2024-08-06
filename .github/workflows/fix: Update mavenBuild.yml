@@ -8,15 +8,24 @@ on:
 jobs:
   mavenBuild:
     runs-on: ubuntu-latest
+
     container:
       image: maven:latest
       
     steps:
+      # Step to check out the code from your repository
       - name: Checkout code
         uses: actions/checkout@v2
-        
-      - name: Moves Current Directory
+
+      # Step to list directories and files to debug
+      - name: List directory contents
+        run: ls -al
+
+      # Step to navigate to the correct directory (only if the previous step shows the directory exists)
+      - name: Change directory to where the POM file is located
         run: cd api-gateway-github-actions
-        
-      - name: Print Maven clean install
+
+      # Step to run Maven clean install
+      - name: Run Maven clean install
         run: mvn clean install
+        working-directory: api-gateway-github-actions

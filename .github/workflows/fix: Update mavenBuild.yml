@@ -8,7 +8,7 @@ on:
 jobs:
   mavenBuild:
     runs-on: ubuntu-latest
-    containers:
+    container:
       image: maven:latest
     steps:
       - name: Checkout file

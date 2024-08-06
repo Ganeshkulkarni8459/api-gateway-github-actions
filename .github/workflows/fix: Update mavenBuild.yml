@@ -13,6 +13,7 @@ jobs:
       
     steps:
       - name: Moves Current Directory
-        run: cd api-gateway-github-actions/pom.xml
+        run: cd api-gateway-github-actions
+        
       - name: Print Maven clean install
         run: mvn clean install

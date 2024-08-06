@@ -13,8 +13,5 @@ jobs:
       image: maven:latest
       
     steps:
-      - name: Change directory to where the POM file is located
-        run: cd ../..
-  
       - name: Run Maven clean install
         run: mvn clean install

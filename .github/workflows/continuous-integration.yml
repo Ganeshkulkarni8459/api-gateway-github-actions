@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - '**'
-      
 jobs:
   pre-commit-scans:
     runs-on: ubuntu-latest

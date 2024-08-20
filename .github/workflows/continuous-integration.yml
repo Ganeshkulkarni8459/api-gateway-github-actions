@@ -1,9 +1,10 @@
-name: CI/CD Workflow For Api-Gateway
+name: CI/CD Workflow For api-gateway
 
 on:
   push:
-    branches:
-      - '**'
+    paths:
+      - Hospital-Management/api-gateway
+
 jobs:
   pre-commit-scans:
     runs-on: ubuntu-latest

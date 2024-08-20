@@ -35,7 +35,7 @@ jobs:
     - name: OWASP scan
       if: false 
       run: mvn org.owasp:dependency-check-maven:check
-        
+      
     - name: License finder
       run: |
         docker pull devopsdynamo17/license-finder

@@ -1,50 +1,73 @@
-name: CI/CD Workflow For api-gateway
+name: CI/CD Workflow For Api Gateway
 
 on:
   push:
-    branches:
-      - '**'
-
+    paths:
+      - Hospital-Management/api-gateway/**
+      
 jobs:
   pre-commit-scans:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Setup Java
+    
+    - name: Setup java
       uses: actions/setup-java@v4
       with:
-        distribution: 'temurin' 
-        java-version: '21'
-
+         distribution: 'temurin' 
+         java-version: '21'
+        
     - name: Checkout code
       uses: actions/checkout@v4
-
-    - name: Perform Google Formatter check
-      run: mvn com.spotify.fmt:fmt-maven-plugin:check
-
+  
     - name: GitLeaks Scan
-      uses: zricethezav/gitleaks-action@v1.3.0
-      with:
-        args: --path=Hospital-Management/appointment-service
+      run: |
+        docker pull devopsdynamo17/gitleaks
+        docker run -v "$(pwd):/path" devopsdynamo17/gitleaks
 
-    - name: OSS Scan
-      run: mvn ossindex:audit
+    # - name: Run Unit Tests
+    #   run: |
+    #     cd hospital-management/api-gateway
+    #     # mvn test
+          
+    - name: Perform Google Formatter Check
+      run: |
+        cd Hospital-Management/api-gateway
+        mvn com.spotify.fmt:fmt-maven-plugin:check
+
+    - name: OSS scan
+      run: |
+        cd Hospital-Management/api-gateway
+        mvn ossindex:audit
       continue-on-error: true
 
-    - name: OWASP Scan
-      if: false
-      run: mvn org.owasp:dependency-check-maven:check
+    - name: OWASP scan
+      if: false 
+      run: |
+        cd Hospital-Management/api-gateway
+        mvn org.owasp:dependency-check-maven:check
 
-    - name: Build code and create Docker images
-      run: mvn clean install docker:build -Dimage.registry=${{secrets.CONTAINER_REGISTRY_URL}} -Dimage.tag=$GITHUB_REF_NAME
+    - name: Build code and create docker images
+      run: |
+        cd Hospital-Management/api-gateway
+        mvn clean install docker:build -Dimage.registry=${{vars.DOCKER_REGISTRY_USER}} -Dimage.tag=$GITHUB_REF_NAME
+         
 
+    - name: License finder
+      run: |
+        cd Hospital-Management/api-gateway
+        docker pull devopsdynamo17/license-finder
+        docker run -v "$(pwd):/scan" devopsdynamo17/license-finder
+      continue-on-error: true
+  
     - name: Log in to GitHub Docker Registry
       uses: docker/login-action@v2
       with:
         username: ${{vars.DOCKER_REGISTRY_USER}}
         password: ${{secrets.DOCKER_REGISTRY_PAT}}
 
-    - name: Push Docker images
+    - name: Push docker images
       run: |
+        cd Hospital-Management/api-gateway
         CURRENT_FOLDER_NAME=$(basename $(pwd))
-        docker push ${{vars.DOCKER_REGISTRY_USER}}/$CURRENT_FOLDER_NAME:$GITHUB_REF_NAME
+        docker push ${{vars.DOCKER_REGISTRY_USER}}/$CURRENT_FOLDER_NAME:$GITHUB_REF_NAME 
